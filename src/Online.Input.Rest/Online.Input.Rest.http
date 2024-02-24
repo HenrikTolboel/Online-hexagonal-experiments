@@ -1,0 +1,6 @@
+@Online.Input.Rest_HostAddress = http://localhost:5235
+
+GET {{Online.Input.Rest_HostAddress}}/Online/
+Accept: application/json
+
+###
