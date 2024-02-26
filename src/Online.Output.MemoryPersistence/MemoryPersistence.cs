@@ -7,7 +7,7 @@ public class MemoryPersistence : IPersistence
 {
     public OnlineItem? Fetch(string id)
     {
-        throw new NotImplementedException();
+        return null; //throw new NotImplementedException();
     }
 
     public bool Store(string id, OnlineItem onlineItem)

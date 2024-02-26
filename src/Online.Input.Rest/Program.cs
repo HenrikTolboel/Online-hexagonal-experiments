@@ -14,10 +14,8 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddControllers();
-       
-        IPersistence persistence = new MemoryPersistence();
-        OnlineService onlineService = new("asjkla", persistence);
-        builder.Services.AddSingleton<IOnlineUseCase>(onlineService);
+
+        builder.Services.AddApplicationServices();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -40,5 +38,16 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+}
+
+public static class ApplicationDependencyInjection
+{
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
+        IPersistence persistence = new MemoryPersistence();
+        OnlineService onlineService = new("asjkla", persistence);
+        services.AddSingleton<IOnlineUseCase>(onlineService);
+
+        return  services;
     }
 }

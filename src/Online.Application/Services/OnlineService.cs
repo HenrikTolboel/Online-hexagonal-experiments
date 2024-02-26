@@ -15,6 +15,7 @@ public class OnlineService : IOnlineUseCase
     }
     public List<OnlineItem> GetOnlineItems(string ListCommand)
     {
+        var t = _persistence.Fetch(ListCommand);
         var list = new List<OnlineItem>();
         list.Add(new OnlineItem(_str));
         list.Add(new OnlineItem(ListCommand));
