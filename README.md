@@ -1,4 +1,4 @@
-# markdown
+# Online application demonstrating hexagonal pattern
 
 ```
 mkdir src tests
