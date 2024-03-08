@@ -15,11 +15,13 @@ public class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddHealthChecks();
+
         builder.Services.AddApplicationServices();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(); 
 
         var app = builder.Build();
 
@@ -36,6 +38,8 @@ public class Program
 
 
         app.MapControllers();
+
+        app.MapHealthChecks("/healthz");
 
         app.Run();
     }
