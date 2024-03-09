@@ -1,4 +1,5 @@
 
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Online.Application;
 using Online.Application.Ports.Output;
 using Online.Output.MemoryPersistence;
@@ -15,7 +16,7 @@ public class Program
 
         builder.Services.AddControllers();
 
-        builder.Services.AddHealthChecks();
+        builder.Services.AddApplicationHealth();
 
         builder.Services.AddApplicationServices();
 
@@ -40,12 +41,15 @@ public class Program
         app.MapControllers();
 
         app.MapHealthChecks("/healthz");
+        app.MapHealthChecks("/ready");
+        app.MapHealthChecks("/health/startup");
+
 
         app.Run();
     }
 }
 
-public static class ApplicationDependencyInjection
+public static class ApplicationConfiguration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
         IPersistence persistence = new MemoryPersistence();
@@ -54,4 +58,26 @@ public static class ApplicationDependencyInjection
 
         return  services;
     }
+
+    public static IServiceCollection AddApplicationHealth(this IServiceCollection services) {
+        services.AddHealthChecks()        
+        .AddCheck<RandomHealthCheck>("Random check");
+
+        return  services;
+    }
 }
+
+public class RandomHealthCheck : IHealthCheck
+{
+    private static readonly Random _rnd = new Random();
+
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    {
+        var result = _rnd.Next(5) == 0
+            ? HealthCheckResult.Healthy()
+            : HealthCheckResult.Unhealthy("Failed random");
+
+        return Task.FromResult(result);
+    }
+}
+
